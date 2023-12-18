@@ -37,8 +37,8 @@ public class PizzaServiceTest {
     @Test
     public void listarTodasPizzasTest() {
         List<Pizza> pizzas = Arrays.asList(
-                new Pizza(1L, "Margherita", "Tomate, mussarela, manjericão", BigDecimal.valueOf(25.0)),
-                new Pizza(2L, "Calabresa", "Calabresa, cebola, mussarela", BigDecimal.valueOf(28.0))
+                new Pizza(1L, "img.png","Margherita", "Tomate, mussarela, manjericão", BigDecimal.valueOf(25.0)),
+                new Pizza(2L, "img.png","Calabresa", "Calabresa, cebola, mussarela", BigDecimal.valueOf(28.0))
         );
         when(pizzaRepository.findAll()).thenReturn(pizzas);
 
@@ -49,7 +49,7 @@ public class PizzaServiceTest {
     @Test
     void buscarPizzaPorId_Existente() {
         Long id = 1L;
-        Pizza pizza = new Pizza(id, "Margherita", "Tomate, mussarela, manjericão", BigDecimal.valueOf(25.0));
+        Pizza pizza = new Pizza(id, "","Margherita", "Tomate, mussarela, manjericão", BigDecimal.valueOf(25.0));
         when(pizzaRepository.findById(id)).thenReturn(Optional.of(pizza));
 
         Optional<Pizza> result = pizzaService.buscarPizzaPorId(id);
@@ -68,8 +68,8 @@ public class PizzaServiceTest {
 
     @Test
     void salvarPizza() {
-        Pizza novaPizza = new Pizza(null, "Quatro Queijos", "Mussarela, parmesão, provolone, gorgonzola", BigDecimal.valueOf(30.0));
-        Pizza pizzaSalva = new Pizza(1L, "Quatro Queijos", "Mussarela, parmesão, provolone, gorgonzola", BigDecimal.valueOf(30.0));
+        Pizza novaPizza = new Pizza(null, "img.png","Quatro Queijos", "Mussarela, parmesão, provolone, gorgonzola", BigDecimal.valueOf(30.0));
+        Pizza pizzaSalva = new Pizza(1L, "img.png","Quatro Queijos", "Mussarela, parmesão, provolone, gorgonzola", BigDecimal.valueOf(30.0));
         when(pizzaRepository.save(novaPizza)).thenReturn(pizzaSalva);
 
         Pizza result = pizzaService.salvarPizza(novaPizza);

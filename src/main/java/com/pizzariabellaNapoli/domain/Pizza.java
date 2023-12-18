@@ -20,6 +20,8 @@ public class Pizza {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String imagem;
+
     private String nome;
 
     private String ingredientes;
@@ -30,8 +32,9 @@ public class Pizza {
 
     }
 
-    public Pizza(Long id, String nome, String ingredientes, BigDecimal valor) {
+    public Pizza(Long id, String imagem,String nome, String ingredientes, BigDecimal valor) {
         this.id = id;
+        this.imagem = imagem;
         this.nome = nome;
         this.ingredientes = ingredientes;
         this.valor = valor;

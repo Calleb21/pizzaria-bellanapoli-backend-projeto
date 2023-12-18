@@ -84,4 +84,40 @@ public class FuncionarioServiceTest {
         funcionarioService.excluirFuncionario(id);
         verify(funcionarioRepository, times(1)).deleteById(id);
     }
+
+    @Test
+    public void buscarFuncionarioPorEmailTest() {
+        String email = "calleb@email.com";
+        Funcionario funcionario = new Funcionario(1L, "Calleb", email, "calleb123");
+
+        when(funcionarioRepository.findByEmail(email)).thenReturn(Optional.of(funcionario));
+
+        Funcionario result = funcionarioService.buscarFuncionarioPorEmail(email);
+        assertNotNull(result);
+        assertEquals(funcionario, result);
+    }
+
+    @Test
+    public void autenticarFuncionario_SuccessTest() {
+        String email = "calleb@email.com";
+        String senha = "calleb123";
+        Funcionario funcionario = new Funcionario(1L, "Calleb", email, senha);
+
+        when(funcionarioRepository.findByEmail(email)).thenReturn(Optional.of(funcionario));
+
+        Optional<Funcionario> result = funcionarioService.autenticarFuncionario(email, senha);
+        assertTrue(result.isPresent());
+        assertEquals(funcionario, result.get());
+    }
+
+    @Test
+    public void autenticarFuncionario_FailTest() {
+        String email = "calleb@email.com";
+        String senha = "senhaIncorreta";
+
+        when(funcionarioRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        Optional<Funcionario> result = funcionarioService.autenticarFuncionario(email, senha);
+        assertTrue(result.isEmpty());
+    }
 }

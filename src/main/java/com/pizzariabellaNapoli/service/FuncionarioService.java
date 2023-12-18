@@ -37,4 +37,19 @@ public class FuncionarioService {
     public void excluirFuncionario(Long id) {
         funcionarioRepository.deleteById(id);
     }
+
+    public Funcionario buscarFuncionarioPorEmail(String email) {
+        return funcionarioRepository.findByEmail(email)
+                .orElse(null);
+    }
+
+    public Optional<Funcionario> autenticarFuncionario(String email, String senha) {
+        Optional<Funcionario> funcionario = funcionarioRepository.findByEmail(email);
+
+        if (funcionario.isPresent() && funcionario.get().getSenha().equals(senha)) {
+            return funcionario;
+        } else {
+            return Optional.empty();
+        }
+    }
 }

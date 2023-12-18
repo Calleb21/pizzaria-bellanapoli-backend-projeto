@@ -91,4 +91,26 @@ public class FuncionarioControllerTest {
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         verify(funcionarioService, times(1)).excluirFuncionario(1L);
     }
+
+    @Test
+    public void autenticarFuncionario_SuccessTest() {
+        Funcionario dadosAutenticacao = new Funcionario(null, "Calleb", "calleb@email.com", "calleb123");
+        Funcionario funcionario = new Funcionario(1L, "Calleb", "calleb@email.com", "calleb123");
+
+        when(funcionarioService.buscarFuncionarioPorEmail(dadosAutenticacao.getEmail())).thenReturn(funcionario);
+
+        ResponseEntity<Funcionario> responseEntity = funcionarioController.autenticarFuncionario(dadosAutenticacao);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(funcionario, responseEntity.getBody());
+    }
+
+    @Test
+    public void autenticarFuncionario_FailTest() {
+        Funcionario dadosAutenticacao = new Funcionario(null, "Calleb", "calleb@email.com", "senhaIncorreta");
+
+        when(funcionarioService.buscarFuncionarioPorEmail(dadosAutenticacao.getEmail())).thenReturn(null);
+
+        ResponseEntity<Funcionario> responseEntity = funcionarioController.autenticarFuncionario(dadosAutenticacao);
+        assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+    }
 }

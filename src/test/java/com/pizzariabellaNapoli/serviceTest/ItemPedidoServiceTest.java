@@ -41,8 +41,8 @@ class ItemPedidoServiceTest {
     @Test
     void listarTodosItensPedidoTest() {
         // Criar pizzas e pedidos simulados
-        Pizza pizza1 = new Pizza(1L, "Pizza1", "Ingredientes1", BigDecimal.valueOf(20.0));
-        Pizza pizza2 = new Pizza(2L, "Pizza2", "Ingredientes2", BigDecimal.valueOf(15.0));
+        Pizza pizza1 = new Pizza(1L, "img.png","Pizza1", "Ingredientes1", BigDecimal.valueOf(20.0));
+        Pizza pizza2 = new Pizza(2L, "","Pizza2", "Ingredientes2", BigDecimal.valueOf(15.0));
 
         Pedido pedido1 = new Pedido(1L, null, null, LocalDateTime.now(), BigDecimal.valueOf(35.0), "Cartão", null);
         Pedido pedido2 = new Pedido(2L, null, null, LocalDateTime.now(), BigDecimal.valueOf(25.0), "Dinheiro", null);

@@ -15,7 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/funcionarios")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
@@ -48,5 +48,16 @@ public class FuncionarioController {
     public ResponseEntity<Void> excluirFuncionario(@PathVariable Long id) {
         funcionarioService.excluirFuncionario(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/autenticar")
+    public ResponseEntity<Funcionario> autenticarFuncionario(@RequestBody Funcionario dadosAutenticacao) {
+        Funcionario funcionario = funcionarioService.buscarFuncionarioPorEmail(dadosAutenticacao.getEmail());
+
+        if (funcionario != null && funcionario.getSenha().equals(dadosAutenticacao.getSenha())) {
+            return new ResponseEntity<>(funcionario, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 }

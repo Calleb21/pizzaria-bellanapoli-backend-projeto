@@ -91,8 +91,8 @@ public class CupomFiscalServiceTest {
     @Test
     public void gerarCupomFiscalTest() {
         List<ItemPedido> itens = new ArrayList<>();
-        ItemPedido item1 = new ItemPedido(1L, 2, new Pizza(1L, "Pizza1", "Ingredientes1", BigDecimal.valueOf(20.0)), null);
-        ItemPedido item2 = new ItemPedido(2L, 1, new Pizza(2L, "Pizza2", "Ingredientes2", BigDecimal.valueOf(15.0)), null);
+        ItemPedido item1 = new ItemPedido(1L, 2, new Pizza(1L, "img.png","Pizza1", "Ingredientes1", BigDecimal.valueOf(20.0)), null);
+        ItemPedido item2 = new ItemPedido(2L, 1, new Pizza(2L, "img.png","Pizza2", "Ingredientes2", BigDecimal.valueOf(15.0)), null);
         itens.add(item1);
         itens.add(item2);
 

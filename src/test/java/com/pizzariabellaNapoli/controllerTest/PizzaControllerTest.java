@@ -57,7 +57,7 @@ public class PizzaControllerTest {
 
     @Test
     void buscarPizzaPorId_Encontrado_DeveRetornarPizza() throws Exception {
-        Pizza pizza = new Pizza(1L, "Margherita", "Tomato, Mozzarella, Basil", BigDecimal.valueOf(10.99));
+        Pizza pizza = new Pizza(1L, "img.png","Margherita", "Tomato, Mozzarella, Basil", BigDecimal.valueOf(10.99));
         when(pizzaService.buscarPizzaPorId(1L)).thenReturn(Optional.of(pizza));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/pizzas/buscar/1"))
@@ -83,7 +83,7 @@ public class PizzaControllerTest {
 
     @Test
     void salvarPizza_DeveRetornarNovaPizza() throws Exception {
-        Pizza pizza = new Pizza(1L, "Pepperoni", "Pepperoni, Cheese", BigDecimal.valueOf(12.99));
+        Pizza pizza = new Pizza(1L, "img.png","Pepperoni", "Pepperoni, Cheese", BigDecimal.valueOf(12.99));
 
         when(pizzaService.salvarPizza(any(Pizza.class))).thenReturn(pizza);
 
