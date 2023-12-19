@@ -1,19 +1,17 @@
 package com.pizzariabellaNapoli.service;
 
+import com.pizzariabellaNapoli.domain.Carrinho;
 import com.pizzariabellaNapoli.domain.CupomFiscal;
-import com.pizzariabellaNapoli.domain.ItemPedido;
-import com.pizzariabellaNapoli.domain.Pedido;
 import com.pizzariabellaNapoli.repository.CupomFiscalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Description of CupomFiscalService
- * Created by calle on 18/12/2023.
+ * Created by calle on 20/12/2023.
  */
 @Service
 public class CupomFiscalService {
@@ -41,23 +39,11 @@ public class CupomFiscalService {
         cupomFiscalRepository.deleteById(id);
     }
 
-    public CupomFiscal gerarCupomFiscal(Pedido pedido) {
-        CupomFiscal cupomFiscal = new CupomFiscal();
-
-        cupomFiscal.setInformacoesPedido(extrairInformacoesPedido(pedido));
-        cupomFiscal.setHorario(LocalDateTime.now());
-        cupomFiscal.setFormaPagamento(pedido.getFormaPagamento());
-
-        return cupomFiscalRepository.save(cupomFiscal);
+    public List<CupomFiscal> listarCuponsFiscaisPorCarrinho(Carrinho carrinho) {
+        return cupomFiscalRepository.findByCarrinho(carrinho);
     }
 
-    private String extrairInformacoesPedido(Pedido pedido) {
-
-        StringBuilder informacoes = new StringBuilder("Produtos: ");
-        for (ItemPedido item : pedido.getItens()) {
-            informacoes.append(item.getPizza().getNome())
-                    .append(" (").append(item.getQuantidade()).append("), ");
-        }
-        return informacoes.toString();
+    public Optional<CupomFiscal> buscarCupomFiscalPorCarrinhoEId(Carrinho carrinho, Long id) {
+        return cupomFiscalRepository.findByCarrinhoAndId(carrinho, id);
     }
 }

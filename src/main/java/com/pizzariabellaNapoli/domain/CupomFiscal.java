@@ -1,17 +1,14 @@
 package com.pizzariabellaNapoli.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 /**
  * Description of CupomFiscal
- * Created by calle on 18/12/2023.
+ * Created by calle on 20/12/2023.
  */
 @Data
 @Entity(name = "tb_cupons_fiscais")
@@ -21,21 +18,26 @@ public class CupomFiscal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String informacoesPedido;
+    private String informacaoesPedido;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime horario;
 
     private String formaPagamento;
 
+    @ManyToOne
+    @JoinColumn(name = "carrinho_id")
+    private Carrinho carrinho;
+
     public CupomFiscal() {
 
     }
 
-    public CupomFiscal(Long id, String informacoesPedido, LocalDateTime horario, String formaPagamento) {
+    public CupomFiscal(Long id, String informacaoesPedido, LocalDateTime horario, String formaPagamento, Carrinho carrinho) {
         this.id = id;
-        this.informacoesPedido = informacoesPedido;
+        this.informacaoesPedido = informacaoesPedido;
         this.horario = horario;
         this.formaPagamento = formaPagamento;
+        this.carrinho = carrinho;
     }
 }

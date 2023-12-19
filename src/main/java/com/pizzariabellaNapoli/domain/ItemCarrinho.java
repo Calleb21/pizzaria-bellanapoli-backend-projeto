@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 /**
- * Description of ItemPedido
- * Created by calle on 18/12/2023.
+ * Description of ItemCarrinho
+ * Created by calle on 20/12/2023.
  */
 @Data
-@Entity(name = "tb_itens_pedidos")
-public class ItemPedido {
+@Entity(name = "tb_itens_carrinho")
+public class ItemCarrinho {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,17 +22,17 @@ public class ItemPedido {
     private Pizza pizza;
 
     @ManyToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    @JoinColumn(name = "carrinho_id")
+    private Carrinho carrinho;
 
-    public ItemPedido() {
+    public ItemCarrinho() {
 
     }
 
-    public ItemPedido(Long id, int quantidade, Pizza pizza, Pedido pedido) {
+    public ItemCarrinho(Long id, int quantidade, Pizza pizza, Carrinho carrinho) {
         this.id = id;
         this.quantidade = quantidade;
         this.pizza = pizza;
-        this.pedido = pedido;
+        this.carrinho = carrinho;
     }
 }

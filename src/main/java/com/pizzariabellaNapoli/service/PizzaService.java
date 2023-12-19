@@ -11,8 +11,7 @@ import java.util.Optional;
 /**
  * Description of PizzaService
  * Created by calle on 18/12/2023.
- */
-@Service
+ */@Service
 public class PizzaService {
 
     private final PizzaRepository pizzaRepository;

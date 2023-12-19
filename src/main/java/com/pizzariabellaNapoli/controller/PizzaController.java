@@ -1,6 +1,8 @@
 package com.pizzariabellaNapoli.controller;
 
+import com.pizzariabellaNapoli.domain.Carrinho;
 import com.pizzariabellaNapoli.domain.Pizza;
+import com.pizzariabellaNapoli.dto.AdicionarProdutoDTO;
 import com.pizzariabellaNapoli.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +14,7 @@ import java.util.List;
 /**
  * Description of PizzaController
  * Created by calle on 18/12/2023.
- */
-@RestController
+ */@RestController
 @RequestMapping("/api/pizzas")
 @CrossOrigin(origins = "http://localhost:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class PizzaController {
