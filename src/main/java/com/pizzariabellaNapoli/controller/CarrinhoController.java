@@ -39,7 +39,7 @@ public class CarrinhoController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/salvar")
+    @PostMapping(value = "/salvar", produces = "application/json")
     public ResponseEntity<Carrinho> salvarCarrinho(@RequestBody Carrinho carrinho) {
         carrinho.getItens().forEach(item -> item.setCarrinho(carrinho));
 
