@@ -5,6 +5,7 @@ import com.pizzariabellaNapoli.domain.Funcionario;
 import com.pizzariabellaNapoli.repository.CarrinhoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class CarrinhoService {
         return carrinhoRepository.findById(id);
     }
 
+    @Transactional
     public Carrinho salvarCarrinho(Carrinho carrinho) {
         carrinho.getItens().forEach(item -> {
             item.setCarrinho(carrinho);

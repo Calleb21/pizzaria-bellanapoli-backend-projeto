@@ -18,8 +18,6 @@ public class CupomFiscal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String informacaoesPedido;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime horario;
 
@@ -29,13 +27,8 @@ public class CupomFiscal {
     @JoinColumn(name = "carrinho_id")
     private Carrinho carrinho;
 
-    public CupomFiscal() {
-
-    }
-
-    public CupomFiscal(Long id, String informacaoesPedido, LocalDateTime horario, String formaPagamento, Carrinho carrinho) {
+    public CupomFiscal(Long id, LocalDateTime horario, String formaPagamento, Carrinho carrinho) {
         this.id = id;
-        this.informacaoesPedido = informacaoesPedido;
         this.horario = horario;
         this.formaPagamento = formaPagamento;
         this.carrinho = carrinho;

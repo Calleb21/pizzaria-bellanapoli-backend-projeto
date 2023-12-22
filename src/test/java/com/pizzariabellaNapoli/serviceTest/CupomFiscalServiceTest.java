@@ -38,8 +38,8 @@ public class CupomFiscalServiceTest {
     @Test
     public void listarTodosCuponsFiscaisTest() {
         List<CupomFiscal> cuponsFiscais = Arrays.asList(
-                new CupomFiscal(1L, "Informacoes1", LocalDateTime.now(), "Pagamento1", new Carrinho()),
-                new CupomFiscal(2L, "Informacoes2", LocalDateTime.now(), "Pagamento2", new Carrinho())
+                new CupomFiscal(1L, LocalDateTime.now(), "Pagamento1", new Carrinho()),
+                new CupomFiscal(2L, LocalDateTime.now(), "Pagamento2", new Carrinho())
         );
 
         when(cupomFiscalRepository.findAll()).thenReturn(cuponsFiscais);
@@ -49,7 +49,7 @@ public class CupomFiscalServiceTest {
     @Test
     public void buscarCupomFiscalPorId_ExistenteTest() {
         Long id = 1L;
-        CupomFiscal cupomFiscal = new CupomFiscal(id, "Informacoes", LocalDateTime.now(), "Pagamento", new Carrinho());
+        CupomFiscal cupomFiscal = new CupomFiscal(id, LocalDateTime.now(), "Pagamento", new Carrinho());
         when(cupomFiscalRepository.findById(id)).thenReturn(Optional.of(cupomFiscal));
 
         Optional<CupomFiscal> result = cupomFiscalService.buscarCupomFiscalPorId(id);
@@ -68,13 +68,12 @@ public class CupomFiscalServiceTest {
 
     @Test
     public void salvarCupomFiscalTest() {
-        CupomFiscal cupomFiscal = new CupomFiscal(null, "Informacoes", LocalDateTime.now(), "Pagamento", new Carrinho());
-        CupomFiscal cupomFiscal1 = new CupomFiscal(1L, "Informacoes", LocalDateTime.now(), "Pagamento", new Carrinho());
+        CupomFiscal cupomFiscal = new CupomFiscal(null, LocalDateTime.now(), "Pagamento", new Carrinho());
+        CupomFiscal cupomFiscal1 = new CupomFiscal(1L, LocalDateTime.now(), "Pagamento", new Carrinho());
         when(cupomFiscalRepository.save(cupomFiscal)).thenReturn(cupomFiscal1);
 
         CupomFiscal result = cupomFiscalService.salvarCupomFiscal(cupomFiscal);
         assertNotNull(result.getId());
-        assertEquals(cupomFiscal1.getInformacaoesPedido(), result.getInformacaoesPedido());
         assertEquals(cupomFiscal1.getHorario(), result.getHorario());
         assertEquals(cupomFiscal1.getFormaPagamento(), result.getFormaPagamento());
         assertEquals(cupomFiscal1.getCarrinho(), result.getCarrinho());
@@ -89,10 +88,10 @@ public class CupomFiscalServiceTest {
 
     @Test
     public void listarCuponsFiscaisPorCarrinhoTest() {
-        Carrinho carrinho = new Carrinho(); // Ajuste conforme necessário
+        Carrinho carrinho = new Carrinho();
         List<CupomFiscal> cuponsFiscais = Arrays.asList(
-                new CupomFiscal(1L, "Informacoes1", LocalDateTime.now(), "Pagamento1", carrinho),
-                new CupomFiscal(2L, "Informacoes2", LocalDateTime.now(), "Pagamento2", carrinho)
+                new CupomFiscal(1L, LocalDateTime.now(), "Pagamento1", carrinho),
+                new CupomFiscal(2L, LocalDateTime.now(), "Pagamento2", carrinho)
         );
 
         when(cupomFiscalRepository.findByCarrinho(carrinho)).thenReturn(cuponsFiscais);
@@ -103,8 +102,8 @@ public class CupomFiscalServiceTest {
     @Test
     public void buscarCupomFiscalPorCarrinhoEId_ExistenteTest() {
         Long id = 1L;
-        Carrinho carrinho = new Carrinho(); // Ajuste conforme necessário
-        CupomFiscal cupomFiscal = new CupomFiscal(id, "Informacoes", LocalDateTime.now(), "Pagamento", carrinho);
+        Carrinho carrinho = new Carrinho();
+        CupomFiscal cupomFiscal = new CupomFiscal(id, LocalDateTime.now(), "Pagamento", carrinho);
         when(cupomFiscalRepository.findByCarrinhoAndId(carrinho, id)).thenReturn(Optional.of(cupomFiscal));
 
         Optional<CupomFiscal> result = cupomFiscalService.buscarCupomFiscalPorCarrinhoEId(carrinho, id);
@@ -115,11 +114,10 @@ public class CupomFiscalServiceTest {
     @Test
     public void buscarCupomFiscalPorCarrinhoEId_NaoExistenteTest() {
         Long id = 1L;
-        Carrinho carrinho = new Carrinho(); // Ajuste conforme necessário
+        Carrinho carrinho = new Carrinho();
         when(cupomFiscalRepository.findByCarrinhoAndId(carrinho, id)).thenReturn(Optional.empty());
 
         Optional<CupomFiscal> result = cupomFiscalService.buscarCupomFiscalPorCarrinhoEId(carrinho, id);
         assertTrue(result.isEmpty());
     }
-
 }

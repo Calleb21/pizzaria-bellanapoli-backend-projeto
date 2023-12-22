@@ -40,8 +40,8 @@ public class CupomFiscalControllerTest {
 
     @Test
     void listarTodosCuponsFiscais_DeveRetornarListaDeCuponsFiscais() {
-        CupomFiscal cupomFiscal1 = new CupomFiscal(1L, "Informacoes1", LocalDateTime.now(), "Cartao", new Carrinho());
-        CupomFiscal cupomFiscal2 = new CupomFiscal(2L, "Informacoes2", LocalDateTime.now(), "Dinheiro", new Carrinho());
+        CupomFiscal cupomFiscal1 = new CupomFiscal(1L, LocalDateTime.now(), "Cartao", new Carrinho());
+        CupomFiscal cupomFiscal2 = new CupomFiscal(2L, LocalDateTime.now(), "Dinheiro", new Carrinho());
         List<CupomFiscal> listaCuponsFiscais = Arrays.asList(cupomFiscal1, cupomFiscal2);
 
         when(cupomFiscalService.listarTodosCuponsFiscais()).thenReturn(listaCuponsFiscais);
@@ -55,7 +55,7 @@ public class CupomFiscalControllerTest {
     @Test
     void buscarCupomFiscalPorId_Encontrado_DeveRetornarCupomFiscal() {
         Long idCupomFiscal = 1L;
-        CupomFiscal cupomFiscal = new CupomFiscal(idCupomFiscal, "Informacoes", LocalDateTime.now(), "Cartao", new Carrinho());
+        CupomFiscal cupomFiscal = new CupomFiscal(idCupomFiscal, LocalDateTime.now(), "Cartao", new Carrinho());
 
         when(cupomFiscalService.buscarCupomFiscalPorId(idCupomFiscal)).thenReturn(Optional.of(cupomFiscal));
 
@@ -79,7 +79,7 @@ public class CupomFiscalControllerTest {
 
     @Test
     void salvarCupomFiscal_DeveRetornarNovoCupomFiscal() {
-        CupomFiscal cupomFiscal = new CupomFiscal(1L, "Informacoes", LocalDateTime.now(), "Cartao", new Carrinho());
+        CupomFiscal cupomFiscal = new CupomFiscal(1L, LocalDateTime.now(), "Cartao", new Carrinho());
 
         when(cupomFiscalService.salvarCupomFiscal(any(CupomFiscal.class))).thenReturn(cupomFiscal);
 
@@ -100,9 +100,9 @@ public class CupomFiscalControllerTest {
     @Test
     void listarCuponsFiscaisPorCarrinho_DeveRetornarListaDeCuponsFiscais() {
         Long idCarrinho = 1L;
-        Carrinho carrinho = new Carrinho(); // Ajuste conforme necessário
-        CupomFiscal cupomFiscal1 = new CupomFiscal(1L, "Informacoes1", LocalDateTime.now(), "Cartao", carrinho);
-        CupomFiscal cupomFiscal2 = new CupomFiscal(2L, "Informacoes2", LocalDateTime.now(), "Dinheiro", carrinho);
+        Carrinho carrinho = new Carrinho();
+        CupomFiscal cupomFiscal1 = new CupomFiscal(1L, LocalDateTime.now(), "Cartao", carrinho);
+        CupomFiscal cupomFiscal2 = new CupomFiscal(2L, LocalDateTime.now(), "Dinheiro", carrinho);
         List<CupomFiscal> listaCuponsFiscais = Arrays.asList(cupomFiscal1, cupomFiscal2);
 
         when(cupomFiscalService.listarCuponsFiscaisPorCarrinho(carrinho)).thenReturn(listaCuponsFiscais);
@@ -117,8 +117,8 @@ public class CupomFiscalControllerTest {
     void buscarCupomFiscalPorCarrinhoEId_Encontrado_DeveRetornarCupomFiscal() {
         Long idCarrinho = 1L;
         Long idCupomFiscal = 1L;
-        Carrinho carrinho = new Carrinho(); // Ajuste conforme necessário
-        CupomFiscal cupomFiscal = new CupomFiscal(idCupomFiscal, "Informacoes", LocalDateTime.now(), "Cartao", carrinho);
+        Carrinho carrinho = new Carrinho();
+        CupomFiscal cupomFiscal = new CupomFiscal(idCupomFiscal, LocalDateTime.now(), "Cartao", carrinho);
 
         when(cupomFiscalService.buscarCupomFiscalPorCarrinhoEId(carrinho, idCupomFiscal)).thenReturn(Optional.of(cupomFiscal));
 
@@ -132,7 +132,7 @@ public class CupomFiscalControllerTest {
     void buscarCupomFiscalPorCarrinhoEId_NaoEncontrado_DeveRetornarNotFound() {
         Long idCarrinho = 1L;
         Long idCupomFiscal = 1L;
-        Carrinho carrinho = new Carrinho(); // Ajuste conforme necessário
+        Carrinho carrinho = new Carrinho();
 
         when(cupomFiscalService.buscarCupomFiscalPorCarrinhoEId(carrinho, idCupomFiscal)).thenReturn(Optional.empty());
 

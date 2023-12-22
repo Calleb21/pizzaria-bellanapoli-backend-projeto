@@ -1,5 +1,6 @@
 package com.pizzariabellaNapoli.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,8 +23,10 @@ public class ItemCarrinho {
     private Pizza pizza;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "carrinho_id")
     private Carrinho carrinho;
+
 
     public ItemCarrinho() {
 
