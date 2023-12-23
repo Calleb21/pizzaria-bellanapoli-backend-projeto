@@ -26,17 +26,11 @@ public class FuncionarioService {
         return funcionarioRepository.findAll();
     }
 
-    public Optional<Funcionario> buscarFuncionarioPorId(Long id) {
-        return funcionarioRepository.findById(id);
-    }
 
     public Funcionario salvarFuncionario(Funcionario funcionario) {
         return funcionarioRepository.save(funcionario);
     }
 
-    public void excluirFuncionario(Long id) {
-        funcionarioRepository.deleteById(id);
-    }
 
     public Funcionario buscarFuncionarioPorEmail(String email) {
         return funcionarioRepository.findByEmail(email)

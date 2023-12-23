@@ -13,11 +13,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 /**
  * Description of FuncionarioControllerTest
@@ -51,28 +50,6 @@ public class FuncionarioControllerTest {
     }
 
     @Test
-    void buscarFuncionarioPorId_Encontrado_DeveRetornarFuncionario() {
-        Funcionario funcionario = new Funcionario(1L, "Nome", "email@example.com", "senha");
-
-        when(funcionarioService.buscarFuncionarioPorId(1L)).thenReturn(Optional.of(funcionario));
-
-        ResponseEntity<Funcionario> responseEntity = funcionarioController.buscarFuncionarioPorId(1L);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(funcionario, responseEntity.getBody());
-    }
-
-    @Test
-    void buscarFuncionarioPorId_NaoEncontrado_DeveRetornarNotFound() {
-        when(funcionarioService.buscarFuncionarioPorId(1L)).thenReturn(Optional.empty());
-
-        ResponseEntity<Funcionario> responseEntity = funcionarioController.buscarFuncionarioPorId(1L);
-
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertNull(responseEntity.getBody());
-    }
-
-    @Test
     void salvarFuncionario_DeveRetornarNovoFuncionario() {
         Funcionario funcionario = new Funcionario(1L, "Nome", "email@example.com", "senha");
 
@@ -82,14 +59,6 @@ public class FuncionarioControllerTest {
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(funcionario, responseEntity.getBody());
-    }
-
-    @Test
-    void excluirFuncionario_DeveRetornarNoContent() {
-        ResponseEntity<Void> responseEntity = funcionarioController.excluirFuncionario(1L);
-
-        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-        verify(funcionarioService, times(1)).excluirFuncionario(1L);
     }
 
     @Test

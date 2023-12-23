@@ -31,23 +31,10 @@ public class FuncionarioController {
         return new ResponseEntity<>(funcionarios, HttpStatus.OK);
     }
 
-    @GetMapping("/buscar/{id}")
-    public ResponseEntity<Funcionario> buscarFuncionarioPorId(@PathVariable Long id) {
-        return funcionarioService.buscarFuncionarioPorId(id)
-                .map(funcionario -> new ResponseEntity<>(funcionario, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
     @PostMapping("/cadastrar")
     public ResponseEntity<Funcionario> salvarFuncionario(@RequestBody Funcionario funcionario) {
         Funcionario novoFuncionario = funcionarioService.salvarFuncionario(funcionario);
         return new ResponseEntity<>(novoFuncionario, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<Void> excluirFuncionario(@PathVariable Long id) {
-        funcionarioService.excluirFuncionario(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/autenticar")

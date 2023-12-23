@@ -46,26 +46,6 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void buscarFuncionariosPorId_ExistenteTest() {
-        Long id = 1L;
-        Funcionario funcionario = new Funcionario(id, "Calleb", "calleb@email.com", "calleb123");
-        when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionario));
-
-        Optional<Funcionario> result = funcionarioService.buscarFuncionarioPorId(id);
-        assertTrue(result.isPresent());
-        assertEquals(funcionario, result.get());
-    }
-
-    @Test
-    public void buscarFuncionariosPorId_NaoExistenteTest() {
-        Long id = 1L;
-        when(funcionarioRepository.findById(id)).thenReturn(Optional.empty());
-
-        Optional<Funcionario> result = funcionarioService.buscarFuncionarioPorId(id);
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
     public void salvarFuncionarioTest() {
         Funcionario funcionario = new Funcionario(null, "Calleb", "calleb@email.com", "calleb123");
         Funcionario funcionario1 = new Funcionario(1L, "Calleb", "calleb@email.com", "calleb123");
@@ -79,26 +59,18 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void excluirFuncionarioTest() {
-        Long id = 1L;
-        funcionarioService.excluirFuncionario(id);
-        verify(funcionarioRepository, times(1)).deleteById(id);
-    }
-
-    @Test
     public void buscarFuncionarioPorEmailTest() {
-        String email = "calleb@email.com";
-        Funcionario funcionario = new Funcionario(1L, "Calleb", email, "calleb123");
+        Funcionario funcionario = new Funcionario(1L, "João", "joao@email.com", "senha123");
 
-        when(funcionarioRepository.findByEmail(email)).thenReturn(Optional.of(funcionario));
+        when(funcionarioRepository.findByEmail("joao@email.com")).thenReturn(Optional.of(funcionario));
 
-        Funcionario result = funcionarioService.buscarFuncionarioPorEmail(email);
-        assertNotNull(result);
+        Funcionario result = funcionarioService.buscarFuncionarioPorEmail("joao@email.com");
         assertEquals(funcionario, result);
+        verify(funcionarioRepository, times(1)).findByEmail("joao@email.com");
     }
 
     @Test
-    public void autenticarFuncionario_SuccessTest() {
+    public void autenticarFuncionario_SuccessoTest() {
         String email = "calleb@email.com";
         String senha = "calleb123";
         Funcionario funcionario = new Funcionario(1L, "Calleb", email, senha);
@@ -111,7 +83,7 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void autenticarFuncionario_FailTest() {
+    public void autenticarFuncionario_FalhaTest() {
         String email = "calleb@email.com";
         String senha = "senhaIncorreta";
 

@@ -1,25 +1,24 @@
 package com.pizzariabellaNapoli.controllerTest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pizzariabellaNapoli.controller.CarrinhoController;
 import com.pizzariabellaNapoli.domain.Carrinho;
-import com.pizzariabellaNapoli.domain.Funcionario;
-import com.pizzariabellaNapoli.domain.ItemCarrinho;
 import com.pizzariabellaNapoli.service.CarrinhoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Description of CarrinhoControllerTest
@@ -33,108 +32,63 @@ public class CarrinhoControllerTest {
     @InjectMocks
     private CarrinhoController carrinhoController;
 
+    private MockMvc mockMvc;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(carrinhoController).build();
     }
 
     @Test
-    void listarTodosCarrinhos_DeveRetornarListaDeCarrinhos() {
-        Carrinho carrinho1 = new Carrinho(1L, new Funcionario(), List.of(new ItemCarrinho()));
-        Carrinho carrinho2 = new Carrinho(2L, new Funcionario(), List.of(new ItemCarrinho()));
-        List<Carrinho> listaCarrinhos = Arrays.asList(carrinho1, carrinho2);
+    public void salvarCarrinhoSucessoTest() throws Exception {
+        Carrinho carrinho = new Carrinho();
+        carrinho.setId(1L);
 
-        when(carrinhoService.listarTodosCarrinhos()).thenReturn(listaCarrinhos);
+        when(carrinhoService.salvarCarrinho(any())).thenReturn(carrinho);
 
-        ResponseEntity<List<Carrinho>> responseEntity = carrinhoController.listarTodosCarrinhos();
+        mockMvc.perform(post("/api/carrinhos/salvar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(carrinho)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L));
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(listaCarrinhos, responseEntity.getBody());
+        verify(carrinhoService, times(1)).salvarCarrinho(any());
     }
 
     @Test
-    void buscarCarrinhoPorId_Encontrado_DeveRetornarCarrinho() {
-        Carrinho carrinho = new Carrinho(1L, new Funcionario(), List.of(new ItemCarrinho()));
+    public void salvarCarrinhoFalhaTest() throws Exception {
+        Carrinho carrinho = new Carrinho();
 
-        when(carrinhoService.buscarCarrinhoPorId(1L)).thenReturn(Optional.of(carrinho));
+        when(carrinhoService.salvarCarrinho(any())).thenThrow(new RuntimeException("Erro interno"));
 
-        ResponseEntity<Carrinho> responseEntity = carrinhoController.buscarCarrinhoPorId(1L);
+        mockMvc.perform(post("/api/carrinhos/salvar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(carrinho)))
+                .andExpect(status().isInternalServerError());
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(carrinho, responseEntity.getBody());
+        verify(carrinhoService, times(1)).salvarCarrinho(any());
     }
 
     @Test
-    void buscarCarrinhoPorId_NaoEncontrado_DeveRetornarNotFound() {
-        when(carrinhoService.buscarCarrinhoPorId(1L)).thenReturn(Optional.empty());
+    public void salvarCarrinhoPizzaNaoEncontradaTest() throws Exception {
+        Carrinho carrinho = new Carrinho();
 
-        ResponseEntity<Carrinho> responseEntity = carrinhoController.buscarCarrinhoPorId(1L);
+        when(carrinhoService.salvarCarrinho(any())).thenThrow(new IllegalArgumentException("Pizza não encontrada"));
 
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertNull(responseEntity.getBody());
+        mockMvc.perform(post("/api/carrinhos/salvar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(carrinho)))
+                .andExpect(status().isBadRequest());
+
+        verify(carrinhoService, times(1)).salvarCarrinho(any());
     }
 
-    @Test
-    void salvarCarrinho_DeveRetornarNovoCarrinho() {
-        Carrinho carrinho = new Carrinho(1L, new Funcionario(), List.of(new ItemCarrinho()));
-
-        when(carrinhoService.salvarCarrinho(any(Carrinho.class))).thenReturn(carrinho);
-
-        ResponseEntity<Carrinho> responseEntity = carrinhoController.salvarCarrinho(carrinho);
-
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(carrinho, responseEntity.getBody());
-    }
-
-    @Test
-    void excluirCarrinho_DeveRetornarNoContent() {
-        ResponseEntity<Void> responseEntity = carrinhoController.excluirCarrinho(1L);
-
-        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-        verify(carrinhoService, times(1)).excluirCarrinho(1L);
-    }
-
-    @Test
-    void listarCarrinhosPorFuncionario_DeveRetornarListaDeCarrinhos() {
-        Funcionario funcionario = new Funcionario(); // ajuste conforme necessário
-        Carrinho carrinho1 = new Carrinho(1L, funcionario, List.of(new ItemCarrinho()));
-        Carrinho carrinho2 = new Carrinho(2L, funcionario, List.of(new ItemCarrinho()));
-        List<Carrinho> listaCarrinhos = Arrays.asList(carrinho1, carrinho2);
-
-        when(carrinhoService.listarCarrinhosPorFuncionario(funcionario)).thenReturn(listaCarrinhos);
-
-        ResponseEntity<List<Carrinho>> responseEntity = carrinhoController.listarCarrinhosPorFuncionario(1L);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(listaCarrinhos, responseEntity.getBody());
-    }
-
-    @Test
-    void buscarCarrinhoPorFuncionarioEId_Encontrado_DeveRetornarCarrinho() {
-        Long idFuncionario = 1L;
-        Long idCarrinho = 1L;
-        Funcionario funcionario = new Funcionario();
-        Carrinho carrinho = new Carrinho(idCarrinho, funcionario, List.of(new ItemCarrinho()));
-
-        when(carrinhoService.buscarCarrinhoPorFuncionarioEId(funcionario, idCarrinho)).thenReturn(Optional.of(carrinho));
-
-        ResponseEntity<Carrinho> responseEntity = carrinhoController.buscarCarrinhoPorFuncionarioEId(idFuncionario, idCarrinho);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(carrinho, responseEntity.getBody());
-    }
-
-    @Test
-    void buscarCarrinhoPorFuncionarioEId_NaoEncontrado_DeveRetornarNotFound() {
-        Long idFuncionario = 1L;
-        Long idCarrinho = 1L;
-        Funcionario funcionario = new Funcionario();
-
-        when(carrinhoService.buscarCarrinhoPorFuncionarioEId(funcionario, idCarrinho)).thenReturn(Optional.empty());
-
-        ResponseEntity<Carrinho> responseEntity = carrinhoController.buscarCarrinhoPorFuncionarioEId(idFuncionario, idCarrinho);
-
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertNull(responseEntity.getBody());
+    private String asJsonString(Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
