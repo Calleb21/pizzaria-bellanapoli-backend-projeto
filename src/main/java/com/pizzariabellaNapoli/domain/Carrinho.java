@@ -26,7 +26,6 @@ public class Carrinho {
     @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL)
     private List<ItemCarrinho> itens;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime horario;
 
     private String formaPagamento;
