@@ -45,5 +45,14 @@ O projeto inclui testes unitários. Execute os testes usando o seguinte comando:
 ```bash
 ./mvnw test
 ```
+## Contribuição
 
+Sinta-se à vontade para contribuir! Abra problemas ou envie solicitações de pull.
 
+## Contato
+
+Para perguntas ou informações adicionais, entre em contato em [camargocalleb12@gmail.com].
+
+## Agradecimentos
+
+Agradeço por contribuir e fazer parte do projeto! 🍕✨
